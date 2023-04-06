@@ -79,6 +79,15 @@ class PHPExcel_Chart_DataSeriesValues
     private $dataValues = array();
 
     /**
+     * Data Values
+     *
+     * @var    array of mixed
+     */
+    private $styles = array(
+        'lineColor' => '', // 折线图线条颜色
+    );
+
+    /**
      * Create a new PHPExcel_Chart_DataSeriesValues object
      */
     public function __construct($dataType = self::DATASERIES_TYPE_NUMBER, $dataSource = null, $formatCode = null, $pointCount = 0, $dataValues = array(), $marker = null)
@@ -329,5 +338,26 @@ class PHPExcel_Chart_DataSeriesValues
             }
             $this->pointCount = count($this->dataValues);
         }
+    }
+
+    /**
+     * Get Series Data Style
+     *
+     * @return    array
+     */
+    public function getStyles()
+    {
+        return $this->styles;
+    }
+
+    /**
+     * Set Series Data Style
+     *
+     * @return    PHPExcel_Chart_DataSeriesValues
+     */
+    public function setStyles($style)
+    {
+        $this->styles = $style;
+        return $this;
     }
 }

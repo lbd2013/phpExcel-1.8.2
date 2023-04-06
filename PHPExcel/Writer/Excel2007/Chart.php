@@ -1349,6 +1349,7 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
             }
 
             //    Formatting for the points
+            $plotSeriesValues = $plotGroup->getPlotValuesByIndex($plotSeriesRef);
             if (($groupType == PHPExcel_Chart_DataSeries::TYPE_LINECHART) || ($groupType == PHPExcel_Chart_DataSeries::TYPE_STOCKCHART)) {
                 $objWriter->startElement('c:spPr');
                 $objWriter->startElement('a:ln');
@@ -1357,6 +1358,18 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
                 } else {
                     $objWriter->writeAttribute('w', 12700);
                 }
+
+                if ($plotSeriesValues) {
+                    $style = $plotSeriesValues->getStyles();
+                    if (!empty($style['lineColor'])) {
+                        $objWriter->startElement('a:solidFill');
+                        $objWriter->startElement('a:srgbClr');
+                        $objWriter->writeAttribute('val', $style['lineColor']);
+                        $objWriter->endElement();
+                        $objWriter->endElement();
+                    }
+                }
+
                 if ($groupType == PHPExcel_Chart_DataSeries::TYPE_STOCKCHART) {
                     $objWriter->startElement('a:noFill');
                     $objWriter->endElement();
@@ -1365,7 +1378,6 @@ class PHPExcel_Writer_Excel2007_Chart extends PHPExcel_Writer_Excel2007_WriterPa
                 $objWriter->endElement();
             }
 
-            $plotSeriesValues = $plotGroup->getPlotValuesByIndex($plotSeriesRef);
             if ($plotSeriesValues) {
                 $plotSeriesMarker = $plotSeriesValues->getPointMarker();
                 if ($plotSeriesMarker) {
